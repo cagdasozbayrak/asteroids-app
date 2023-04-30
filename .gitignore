@@ -2,6 +2,7 @@
 *.iml
 *.iws
 *.ipr
+.env
 
 backend/HELP.md
 backend/target/
