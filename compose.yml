@@ -1,0 +1,15 @@
+version: '3'
+services:
+  playground-web-frontend:
+    image: asteroids-frontend:latest
+    environment:
+      PORT: 3000
+      REACT_APP_BACKEND_URL: http://localhost:8080/
+    ports:
+      - 3000:3000
+  asteroids-backend:
+    image: asteroids-backend:latest
+    environment:
+      NASA_APIKEY: <YOUR_API_KEY>
+    ports:
+      - 8080:8080
