@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.google.common.util.concurrent.RateLimiter;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -16,6 +17,7 @@ public class AsteroidsService {
     private final WebClient nasaWebClient;
     private final RateLimiter nasaWebClientRateLimiter;
 
+    @Cacheable("feed-cache")
     public Flux<Object> fetchFeed(LocalDate startDate, LocalDate endDate)
     {
     return nasaWebClient

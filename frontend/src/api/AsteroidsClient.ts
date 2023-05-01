@@ -1,0 +1,121 @@
+import axios, { AxiosInstance } from 'axios'
+import moment from 'moment'
+
+const API_URL = process.env.REACT_APP_BACKEND_URL
+const ENDPOINT = 'feed'
+
+export interface NEOFeedResponse {
+    links: {
+        next: string
+        prev: string
+        self: string
+    }
+    element_count: number
+    near_earth_objects: {
+        [date: string]: NEOData[]
+    }
+}
+
+export interface NEOData {
+    links: {
+        self: string
+    }
+    id: string
+    neo_reference_id: string
+    name: string
+    nasa_jpl_url: string
+    absolute_magnitude_h: number
+    estimated_diameter: {
+        kilometers: {
+            estimated_diameter_min: number
+            estimated_diameter_max: number
+        }
+        meters: {
+            estimated_diameter_min: number
+            estimated_diameter_max: number
+        }
+        miles: {
+            estimated_diameter_min: number
+            estimated_diameter_max: number
+        }
+        feet: {
+            estimated_diameter_min: number
+            estimated_diameter_max: number
+        }
+    }
+    is_potentially_hazardous_asteroid: boolean
+    close_approach_data: {
+        close_approach_date: string
+        close_approach_date_full: string
+        epoch_date_close_approach: number
+        relative_velocity: {
+            kilometers_per_second: string
+            kilometers_per_hour: string
+            miles_per_hour: string
+        }
+        miss_distance: {
+            astronomical: number
+            lunar: number
+            kilometers: number
+            miles: number
+        }
+        orbiting_body: string
+    }[]
+    orbital_data: {
+        orbit_id: string
+        orbit_determination_date: string
+        first_observation_date: string
+        last_observation_date: string
+        data_arc_in_days: number
+        observations_used: number
+        orbit_uncertainty: string
+        minimum_orbit_intersection: string
+        jupiter_tisserand_invariant: string
+        epoch_osculation: string
+        eccentricity: string
+        semi_major_axis: string
+        inclination: string
+        ascending_node_longitude: string
+        orbital_period: string
+        perihelion_distance: string
+        perihelion_argument: string
+        aphelion_distance: string
+        perihelion_time: string
+        mean_anomaly: string
+        mean_motion: string
+        equinox: string
+        orbit_class: {
+            orbit_class_type: string
+            orbit_class_description: string
+            orbit_class_range: string
+        }
+    }
+}
+
+export class AsteroidsClient {
+    axiosClient: AxiosInstance
+
+    constructor() {
+        this.axiosClient = axios.create({
+            baseURL: API_URL,
+            timeout: 30000,
+        })
+    }
+
+    async fetchAsteroidsFeed(
+        start_date: Date | null
+    ): Promise<NEOFeedResponse> {
+        const { data } = await this.axiosClient.get<NEOFeedResponse[]>(
+            ENDPOINT,
+            { params: { start_date: this.getDateString(start_date) } }
+        )
+        return data[0]
+    }
+
+    private getDateString = (date: Date | null): String | null => {
+        if (date == null) {
+            return null
+        }
+        return moment(date).format('YYYY-MM-DD')
+    }
+}
