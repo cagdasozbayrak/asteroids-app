@@ -1,5 +1,5 @@
 .App {
-    text-align: center;
+    margin: 10px;
 }
 
 .App-logo {
@@ -24,7 +24,12 @@
     background-color: #2b2b2b;
     border: none;
     margin-top: 20px;
+    margin-bottom: 20px;
     text-align: center;
     color: white;
     font-size: 20px;
+}
+
+#back-arrow {
+    cursor: pointer;
 }

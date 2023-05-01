@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { NEOData } from '../../../api/AsteroidsClient'
 import { JSONTree } from 'react-json-tree'
+import './neoDataRenderer.css'
 
 interface NEODataProps {
     data: NEOData
@@ -30,7 +31,9 @@ export const NEODataRenderer = (props: NEODataProps) => {
     const renderData = () => (
         <div className="neo-data" onClick={props.onClick}>
             <div className="neo-name">{`Name: ${data.name}`}</div>
-            <div className="neo-miss-distance">{`Miss distance: ${maxMissDistance} LD`}</div>
+            <div className="neo-miss-distance">{`Miss distance: ${maxMissDistance.toFixed(
+                2
+            )} LD`}</div>
         </div>
     )
 
