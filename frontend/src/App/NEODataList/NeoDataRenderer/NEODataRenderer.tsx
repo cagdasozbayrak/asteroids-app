@@ -7,11 +7,10 @@ interface NEODataProps {
     data: NEOData
     onClick: () => void
     showDetails: boolean
-    loading?: boolean
 }
 
 export const NEODataRenderer = (props: NEODataProps) => {
-    const { data, onClick, showDetails, loading } = props
+    const { data, onClick, showDetails } = props
     const [maxMissDistance, setMaxMissDistance] = useState<number>(-1)
 
     useEffect(() => {
@@ -24,12 +23,10 @@ export const NEODataRenderer = (props: NEODataProps) => {
         setMaxMissDistance(missDistance)
     }, [props.data])
 
-    const renderLoading = () => <div>loading</div>
-
     const renderDetail = () => <JSONTree data={data} />
 
     const renderData = () => (
-        <div className="neo-data" onClick={props.onClick}>
+        <div className="neo-data" onClick={onClick}>
             <div className="neo-name">{`Name: ${data.name}`}</div>
             <div className="neo-miss-distance">{`Miss distance: ${maxMissDistance.toFixed(
                 2
@@ -37,9 +34,6 @@ export const NEODataRenderer = (props: NEODataProps) => {
         </div>
     )
 
-    if (loading) {
-        return renderLoading()
-    }
     if (showDetails) {
         return renderDetail()
     }
